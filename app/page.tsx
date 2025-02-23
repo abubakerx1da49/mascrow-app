@@ -78,7 +78,7 @@ export default function Home() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent align="start">
-                <Calendar mode="single" selected={formData.schedule} onSelect={(date) => handleChange("schedule", date)} />
+                <Calendar mode="single" selected={(formData.schedule as any)} onSelect={(date) => handleChange("schedule", date)} />
               </PopoverContent>
             </Popover>
           </div>
