@@ -14,7 +14,6 @@ import {
 import { AlignJustify } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import SquareBGComponent from "@/components/Squares/SquareBGComponent";
 import BackgroundPattern from "@/components/BackgroundPattern";
 // import LetterGlitch from "./components/LetterGlitch/LetterGlitch";
 
@@ -38,6 +37,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { userId } = await auth();
+  if(userId) {
+    console.log(userId)
+  }
   const user = await currentUser();
 
   return (
