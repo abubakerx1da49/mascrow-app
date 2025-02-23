@@ -7,7 +7,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 
 const uri = process.env.MONGODB_URI!;
 
-export async function fetchLinksById(id: string) {
+async function fetchLinksById(id: string) {
     if (!id) throw new Error("ID is required");
 
     const client = new MongoClient(uri, {
