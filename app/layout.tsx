@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -31,10 +30,9 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children, params
+  children
 }: Readonly<{
   children: React.ReactNode;
-  params: any
 }>) {
   const { userId } = await auth();
   if (userId) {
