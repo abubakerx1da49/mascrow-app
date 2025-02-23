@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -14,8 +15,6 @@ import {
 import { AlignJustify } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import BackgroundPattern from "@/components/BackgroundPattern";
-// import LetterGlitch from "./components/LetterGlitch/LetterGlitch";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,13 +31,14 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({
-  children,
+  children, params
 }: Readonly<{
   children: React.ReactNode;
+  params: any
 }>) {
   const { userId } = await auth();
-  if(userId) {
-    console.log(userId)
+  if (userId) {
+    // console.log(userId)
   }
   const user = await currentUser();
 
@@ -48,9 +48,6 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} bg-neutral-950 antialiased min-h-screen h-screen p-0 md:p-6 invert-0`}
         >
-
-          {/* <SquareBGComponent /> */}
-          <BackgroundPattern />
 
           <div className="relative md:border border-neutral-700 max-w-6xl md:rounded-xl h-full m-auto bg-neutral-900 overflow-hidden overflow-y-auto">
 
@@ -70,9 +67,9 @@ export default async function RootLayout({
                     <SignInButton />
                   </Button>
                 </SignedOut>
-                  <SignedIn>
-                    <UserButton />
-                  </SignedIn>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
               </header>
             </div>
 
@@ -87,13 +84,14 @@ export default async function RootLayout({
                   </Link>
                 </div>
                 {children}
-
               </div>
             ) : (
               <div className="">
+                
+                {children}
 
-                <div className="bg-neutral-700 p-2 text-white text-sm">
-                  Please register an account to access and use all features on this platform.
+                <div className="bg-yellow-400 p-2 text-black text-sm">
+                  Please register to access mascrow and use all features on this platform.
                 </div>
 
                 <div className="prose prose-sm max-w-none p-6 prose-invert">
@@ -122,17 +120,11 @@ export default async function RootLayout({
                   <p><strong>Register now</strong> to unlock the full potential of secure link sharing.  </p>
                   <hr />
                   <p>🚀 <em>Enhancing link security and customization—one URL at a time.</em>  </p>
-
-
                 </div>
               </div>
             )}
 
           </div>
-
-
-
-          {/* <BottomAppBar /> */}
         </body>
       </html>
     </ClerkProvider>
