@@ -111,7 +111,7 @@ const LinkCard: React.FC<LinkCardProps> = ({ originalUrl, shortId, createdAt, pa
                     </Button>
                 </div>
 
-                <div className="mt-6 border-t pt-6">
+                <div className="mt-6 border-t pt-6 flex items-end justify-start space-x-4">
                     <Canvas
                         text={`${shortUrl}`}
                         options={{

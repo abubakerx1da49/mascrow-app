@@ -1,26 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react'
+"use client"; // Ensure this runs on the client side
 
-const QRCodeDownloadBtn = async (params: any) => {
+import { useEffect, useState } from "react";
 
-    const shortId = params.shortId
+const QRCodeDownloadBtn = ({ shortId }: { shortId: string }) => {
+  const [qrCodeData, setQrCodeData] = useState<string | null>(null);
 
-    return (
-        <div>
-            <a
-                href={`data:image/png;base64,${await new Promise((resolve) => {
-                    const canvas = document.querySelector('canvas');
-                    if (canvas) {
-                        resolve(canvas.toDataURL().split(',')[1]);
-                    }
-                })}`}
-                download={`${shortId}.png`}
-                className="mt-2 text-blue-600 underline"
-            >
-                Download QR Code
-            </a>
-        </div>
-    )
-}
+  useEffect(() => {
+    const canvas = document.querySelector("canvas");
+    if (canvas) {
+      const qrData = canvas.toDataURL(); // Convert canvas to base64
+      setQrCodeData(qrData);
+    }
+  }, []);
 
-export default QRCodeDownloadBtn
+  return (
+    <div className="h-full pb-1.5">
+      {qrCodeData ? (
+        <a
+          href={qrCodeData}
+          download={`${shortId}.png`}
+          className="no-underline bg-primary text-primary-foreground shadow hover:bg-primary/90 p-2 rounded-md px-4 text-xs"
+        >
+          Download QR Code
+        </a>
+      ) : (
+        <p>Generating QR Code...</p>
+      )}
+    </div>
+  );
+};
+
+export default QRCodeDownloadBtn;
