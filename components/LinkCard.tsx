@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { useQRCode } from 'next-qrcode';
+import QRCodeDownloadBtn from "./QRCodeDownloadBtn";
 
 interface LinkCardProps {
     originalUrl: string;
@@ -124,18 +125,8 @@ const LinkCard: React.FC<LinkCardProps> = ({ originalUrl, shortId, createdAt, pa
                             },
                         }}
                     />
-                    {/* <a
-                        href={`data:image/png;base64,${await new Promise((resolve) => {
-                            const canvas = document.querySelector('canvas');
-                            if (canvas) {
-                                resolve(canvas.toDataURL().split(',')[1]);
-                            }
-                        })}`}
-                        download={`${shortId}.png`}
-                        className="mt-2 text-blue-600 underline"
-                    >
-                        Download QR Code
-                    </a> */}
+
+                    <QRCodeDownloadBtn shortId={shortId} />
                 </div>
 
                 <div className="my-0 py-0 border-t mt-4 pt-2">
