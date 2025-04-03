@@ -32,7 +32,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const user: any = await currentUser()
-    const { originalUrl, password } = body;
+    const { originalUrl, password, ogTitle, ogDescription, ogImage } = body;
 
     if (!originalUrl) {
       return NextResponse.json(
@@ -55,6 +55,9 @@ export async function POST(request: Request) {
         $set: {
           originalUrl,
           password,
+          ogTitle,
+          ogDescription,
+          ogImage,
           username: user.username,
           user_id: user.id,
           updatedAt: new Date(),

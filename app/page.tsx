@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { CheckCircle } from "lucide-react";
 import React from "react";
@@ -14,6 +14,7 @@ import { useUser } from "@clerk/nextjs";
 export default function Home() {
 
   const { isSignedIn } = useUser();
+  const [loading, setLoading] = useState(false)
 
 
   const [formData, setFormData] = useState({
@@ -33,18 +34,9 @@ export default function Home() {
 
   const handleSubmit = async () => {
 
-    const runtime_formData = formData
+    setLoading(true)
 
-    setFormData({
-      originalUrl: "",
-      password: "",
-      ogTitle: "",
-      ogDescription: "",
-      ogImage: "",
-      schedule: null,
-      enableQr: false,
-      analytics: false,
-    })
+    const runtime_formData = formData
 
     try {
       const response = await fetch("/api/links", {
@@ -60,13 +52,28 @@ export default function Home() {
       if (data.success) {
         // console.log("Link created successfully:", data.shortId);
         alert(`Shortened Link ID: ${data.shortId}`);
+        setLoading(false)
       } else {
         console.error("Error:", data.message);
         alert(`Error: ${data.message}`);
+        setLoading(false)
       }
     } catch (error) {
       console.error("Request failed:", error);
       alert("Something went wrong. Please try again.");
+      setLoading(false)
+    } finally {
+      setLoading(false)
+      setFormData({
+        originalUrl: "",
+        password: "",
+        ogTitle: "",
+        ogDescription: "",
+        ogImage: "",
+        schedule: null,
+        enableQr: false,
+        analytics: false,
+      })
     }
   };
 
@@ -112,14 +119,65 @@ export default function Home() {
               </div>
             </div>
 
+            {/* OG Title Field */}
+            <div>
+              <Label>OG Title: </Label>
+              <div className="mt-2 flex items-center">
+                <Input
+                  type="text"
+                  value={formData.ogTitle}
+                  onChange={(e) => handleChange("ogTitle", e.target.value)}
+                  className="flex-1"
+                  required
+                />
+                <CheckCircle color={getIconColor(formData.ogTitle)} size={20} className="ml-2" />
+              </div>
+            </div>
+
+            {/* OG Description Field */}
+            <div>
+              <Label>OG Description: <Badge variant={'secondary'}>optional</Badge></Label>
+              <div className="mt-2 flex items-center">
+                <Input
+                  type="text"
+                  value={formData.ogDescription}
+                  onChange={(e) => handleChange("ogDescription", e.target.value)}
+                  className="flex-1"
+                />
+                <CheckCircle color={getIconColor(formData.ogDescription)} size={20} className="ml-2" />
+              </div>
+            </div>
+
+            {/* OG Image Field */}
+            <div>
+              <Label>OG Image: <Badge variant={'secondary'}>optional</Badge></Label>
+              <div className="mt-2 flex items-center">
+                <Input
+                  type="url"
+                  value={formData.ogImage}
+                  onChange={(e) => handleChange("ogImage", e.target.value)}
+                  className="flex-1"
+                />
+                <CheckCircle color={getIconColor(formData.ogImage)} size={20} className="ml-2" />
+              </div>
+            </div>
+
+
             <Button
               onClick={handleSubmit}
               className="w-full"
-              disabled={formData.originalUrl.length === 0}
+              disabled={formData.originalUrl.length === 0 || formData.ogTitle.length === 0 || loading}
             >
               Create Masked Link
             </Button>
           </CardContent>
+          {loading && (
+            <CardFooter>
+              <span className="text-sm">
+                Working in Progress
+              </span>
+            </CardFooter>
+          )}
         </Card>
       </div>
     );

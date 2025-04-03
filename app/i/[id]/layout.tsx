@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import LinkPreview from "@/components/LinkPreview";
+import type { Metadata } from 'next'
 import { MongoClient, ServerApiVersion } from "mongodb";
 // import LinkCard from "@/components/LinkCard";
 
@@ -29,16 +29,34 @@ async function fetchLinksById(id: string) {
     }
 }
 
-const Page = async (params: { params: any }) => {
 
-    const { id } = await params.params;
+
+export async function generateMetadata(
+    { params }: any,
+): Promise<Metadata> {
+    const { id } = await params;
     const link: any = await fetchLinksById(id);
+
+    return {
+        title: link?.ogTitle ? link.ogTitle : "Mascrow",
+        description: link?.ogDescription ? link.ogDescription : "made for masking urls.",
+        openGraph: {
+            images: [link?.ogImage ? link.ogImage : ""],
+        },
+    }
+}
+
+
+export default async function RootLayout({
+    children
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
 
     return (
         <div className="">
-            <LinkPreview id={id} link={JSON.stringify(link)} />
+
+            {children}
         </div>
     );
-};
-
-export default Page;
+}

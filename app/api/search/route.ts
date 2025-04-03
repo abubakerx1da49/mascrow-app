@@ -36,7 +36,7 @@ export async function GET(request: Request) { // FIX: Added `request`
         }
 
         const username = user.username;
-        console.log("Fetching for username:", username);
+        // console.log("Fetching for username:", username);
 
         const client = await getClient();
         const db = client.db("shortend_uris");
@@ -44,7 +44,7 @@ export async function GET(request: Request) { // FIX: Added `request`
         // Fetch links where username matches
         const links = await db.collection("links").find({ username }).toArray();
 
-        console.log("Links found:", links);
+        // console.log("Links found:", links);
 
         return NextResponse.json({ success: true, links }, { status: 200 });
     } catch (error: any) {
