@@ -75,7 +75,7 @@ const LinkPreview = (params: any) => {
             {/* Generate code that says share this link on different platform with the current page link in different social media platforms */}
             <div className="mt-6">
               <p className="text-neutral-100 text-xl pb-2 font-medium">Share this link:</p>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 flex-wrap">
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
                   target="_blank"
