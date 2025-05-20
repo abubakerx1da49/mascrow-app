@@ -46,6 +46,8 @@ const Page = () => {
                             ogTitle={link.ogTitle}
                             ogDescription={link.ogDescription}
                             ogImage={link.ogImage}
+                            activateAt={link.scheduleActivation}
+                            trackingId={link.trackingId}
                         />
                     ))}
                 </div>

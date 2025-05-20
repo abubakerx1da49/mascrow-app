@@ -15,6 +15,8 @@ interface LinkCardProps {
   ogTitle: string;
   ogDescription: string;
   ogImage: string;
+  activateAt: string;
+  trackingId: string;
 }
 
 const LinkCard: React.FC<LinkCardProps> = ({
@@ -25,6 +27,8 @@ const LinkCard: React.FC<LinkCardProps> = ({
   ogTitle,
   ogDescription,
   ogImage,
+  activateAt,
+  trackingId
 }) => {
   const { Canvas } = useQRCode();
   const [copied, setCopied] = useState(false);
@@ -63,8 +67,8 @@ const LinkCard: React.FC<LinkCardProps> = ({
       console.error(error);
     }
   };
-  
-  
+
+
 
   return (
     <article className=" bg-white overflow-hidden border border-gray-200">
@@ -170,7 +174,7 @@ const LinkCard: React.FC<LinkCardProps> = ({
         </section>
 
         {/* Password (if exists) */}
-        {password && (
+        {password ? (
           <section className="bg-white p-4 rounded-md border border-gray-300 shadow-sm flex items-center justify-between">
             <div className="flex items-center gap-3 text-purple-600">
               <svg
@@ -202,7 +206,50 @@ const LinkCard: React.FC<LinkCardProps> = ({
               </Button>
             </div>
           </section>
-        )}
+        )
+          :
+          <></>
+        }
+
+        {/* Activated At */}
+        <section className="bg-white p-4 rounded-md border border-gray-300 shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-3 text-indigo-600">
+            <Calendar className="w-6 h-6" />
+            <h2 className="text-lg font-semibold">Activation Time</h2>
+          </div>
+          {activateAt ?
+            <time
+              dateTime={new Date(activateAt).toISOString()}
+              className="font-mono text-gray-700"
+            >
+              {new Date(createdAt).toLocaleString()}
+            </time>
+            :
+            <div className="font-mono">NULL</div>
+          }
+        </section>
+
+
+
+        {/* Google Tracks At */}
+        <section className="bg-white p-4 rounded-md border border-gray-300 shadow-sm flex items-center justify-between">
+          <div className="flex items-center gap-3 text-indigo-600">
+            <Calendar className="w-6 h-6" />
+            <h2 className="text-lg font-semibold">Google Tracking ID</h2>
+          </div>
+          {trackingId ?
+            <div
+              className="font-mono text-gray-700"
+            >
+              {trackingId}
+            </div>
+            :
+            <div className="font-mono">
+              NULL
+            </div>
+          }
+        </section>
+
       </div>
 
       {/* Actions + QR Code */}
