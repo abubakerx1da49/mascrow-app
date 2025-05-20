@@ -222,7 +222,7 @@ const LinkCard: React.FC<LinkCardProps> = ({
               dateTime={new Date(activateAt).toISOString()}
               className="font-mono text-gray-700"
             >
-              {new Date(createdAt).toLocaleString()}
+              {new Date(activateAt).toLocaleString()}
             </time>
             :
             <div className="font-mono">NULL</div>
