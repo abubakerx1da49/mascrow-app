@@ -28,7 +28,7 @@ async function fetchLinksById(id: string) {
   }
 }
 
-const Page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: any }) => {
   const { id } = params;
   const link: any = await fetchLinksById(id);
 
