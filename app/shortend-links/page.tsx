@@ -35,7 +35,7 @@ const Page = () => {
     return (
         <div>
             {links.length > 0 ? (
-                <div className="p-4 grid lg:grid-cols-2 lg:gap-4">
+                <div className="p-4 grid lg:grid-cols-2 gap-4">
                     {links.map((link: any, index: number) => (
                         <LinkCard
                             key={index}
