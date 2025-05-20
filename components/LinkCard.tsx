@@ -222,7 +222,7 @@ const LinkCard: React.FC<LinkCardProps> = ({
                 light: "#FFF",
               },
             }}
-            className="rounded-lg border border-gray-300"
+            // className="rounded-lg border border-gray-300"
           />
           <QRCodeDownloadBtn shortId={shortId} />
         </div>

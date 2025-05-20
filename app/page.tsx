@@ -4,11 +4,11 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { CheckCircle } from "lucide-react";
+// import { CheckCircle } from "lucide-react";
 import React from "react";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { useUser } from "@clerk/nextjs";
 
 export default function Home() {
@@ -79,7 +79,7 @@ export default function Home() {
 
 
   // Returns green if value exists, gray otherwise
-  const getIconColor = (value: any) => (value ? 'green' : 'gray');
+  // const getIconColor = (value: any) => (value ? 'green' : 'gray');
 
   if (isSignedIn) {
     return (
