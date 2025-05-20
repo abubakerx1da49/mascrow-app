@@ -47,6 +47,8 @@ const Page = async ({ params }: { params: any }) => {
         ogTitle={link?.ogTitle}
         ogDescription={link?.ogDescription}
         ogImage={link?.ogImage}
+        activateAt={link?.scheduleActivation}
+        trackingId={link?.trackingId}
       />
     </div>
   );

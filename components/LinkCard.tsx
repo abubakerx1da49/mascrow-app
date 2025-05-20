@@ -44,6 +44,28 @@ const LinkCard: React.FC<LinkCardProps> = ({
     }
   };
 
+
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await fetch(`/api/links?shortId=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Deleted successfully");
+        window.location.reload();  // Reload the page automatically
+        // Update UI state here e.g. remove from list
+      } else {
+        alert("Delete failed: " + data.message);
+      }
+    } catch (error) {
+      alert("Error deleting link");
+      console.error(error);
+    }
+  };
+  
+  
+
   return (
     <article className=" bg-white overflow-hidden border border-gray-200">
       {/* Header / Preview */}
@@ -207,6 +229,17 @@ const LinkCard: React.FC<LinkCardProps> = ({
           >
             Copy Short URL
           </Button>
+
+          <Button
+            variant="destructive"
+            onClick={() => handleDelete(shortId)}
+            className="bg-red-500 hover:bg-red-700 text-red-100"
+            aria-label="Delete link"
+          >
+            Delete
+          </Button>
+
+
         </div>
 
         <div className="flex items-center gap-4">
@@ -222,7 +255,7 @@ const LinkCard: React.FC<LinkCardProps> = ({
                 light: "#FFF",
               },
             }}
-            // className="rounded-lg border border-gray-300"
+          // className="rounded-lg border border-gray-300"
           />
           <QRCodeDownloadBtn shortId={shortId} />
         </div>

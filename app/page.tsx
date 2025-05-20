@@ -24,6 +24,8 @@ export default function Home() {
     ogDescription: "",
     ogImage: "",
     schedule: null,
+    scheduleActivation: "", // <-- new
+    trackingId: "",         // <-- new  
     enableQr: false,
     analytics: false,
   });
@@ -51,16 +53,16 @@ export default function Home() {
 
       if (data.success) {
         // console.log("Link created successfully:", data.shortId);
-        alert(`Shortened Link ID: ${data.shortId}`);
+        // alert(`Shortened Link ID: ${data.shortId}`);
         setLoading(false)
       } else {
         console.error("Error:", data.message);
-        alert(`Error: ${data.message}`);
+        // alert(`Error: ${data.message}`);
         setLoading(false)
       }
     } catch (error) {
       console.error("Request failed:", error);
-      alert("Something went wrong. Please try again.");
+      // alert("Something went wrong. Please try again.");
       setLoading(false)
     } finally {
       setLoading(false)
@@ -71,6 +73,8 @@ export default function Home() {
         ogDescription: "",
         ogImage: "",
         schedule: null,
+        scheduleActivation: "",
+        trackingId: "",
         enableQr: false,
         analytics: false,
       })
@@ -106,6 +110,20 @@ export default function Home() {
             <p className="text-xs text-gray-500">Paste the original link you want to mask. (eg. https://google.com)</p>
           </div>
 
+          {/* OG Title */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-800">Preview Title</Label>
+            <Input
+              type="text"
+              placeholder="Exciting Product Launch!"
+              value={formData.ogTitle}
+              onChange={(e) => handleChange("ogTitle", e.target.value)}
+              required
+              className="w-full border border-gray-300 px-4 py-2.5 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+            <p className="text-xs text-gray-500">Shown as the title when shared on social media. (eg. Google)</p>
+          </div>
+
           {/* Password */}
           <div className="space-y-2">
             <Label className="text-sm font-medium text-gray-800">
@@ -121,19 +139,37 @@ export default function Home() {
             <p className="text-xs text-gray-500">Add a password to restrict access to this link.</p>
           </div>
 
-          {/* OG Title */}
+          {/* Schedule Activation */}
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-gray-800">Preview Title</Label>
+            <Label className="text-sm font-medium text-gray-800">
+              Schedule Activation Time <span className="ml-2 text-xs text-gray-500">(optional)</span>
+            </Label>
             <Input
-              type="text"
-              placeholder="Exciting Product Launch!"
-              value={formData.ogTitle}
-              onChange={(e) => handleChange("ogTitle", e.target.value)}
-              required
+              type="datetime-local"
+              value={formData.scheduleActivation}
+              onChange={(e) => handleChange("scheduleActivation", e.target.value)}
               className="w-full border border-gray-300 px-4 py-2.5 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
-            <p className="text-xs text-gray-500">Shown as the title when shared on social media. (eg. Google)</p>
+            <p className="text-xs text-gray-500">Select the time when this link should become active.</p>
           </div>
+
+          {/* Google Analytics Tracking ID */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-800">
+              Google Analytics G-ID <span className="ml-2 text-xs text-gray-500">(optional)</span>
+            </Label>
+            <Input
+              type="text"
+              placeholder="G-XXXXXXXXXX"
+              value={formData.trackingId}
+              onChange={(e) => handleChange("trackingId", e.target.value)}
+              className="w-full border border-gray-300 px-4 py-2.5 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+            />
+            <p className="text-xs text-gray-500">Enter your GA4 Measurement ID (e.g., G-ABCD123456).</p>
+            <p className="text-xs text-gray-500">Make sure your ID Tracks <strong>https://mascrow-app.vercel.app/</strong> this URL.</p>
+          </div>
+
+
 
           {/* OG Description */}
           <div className="space-y-2">
