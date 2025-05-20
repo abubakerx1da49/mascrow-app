@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar, Copy, ExternalLink } from "lucide-react";
+import { Calendar, Calendar1, Copy, ExternalLink, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useQRCode } from "next-qrcode";
 import QRCodeDownloadBtn from "./QRCodeDownloadBtn";
@@ -213,8 +213,8 @@ const LinkCard: React.FC<LinkCardProps> = ({
 
         {/* Activated At */}
         <section className="bg-white p-4 rounded-md border border-gray-300 shadow-sm flex items-center justify-between">
-          <div className="flex items-center gap-3 text-indigo-600">
-            <Calendar className="w-6 h-6" />
+          <div className="flex items-center gap-3 text-emerald-600">
+            <Calendar1 className="w-6 h-6" />
             <h2 className="text-lg font-semibold">Activation Time</h2>
           </div>
           {activateAt ?
@@ -233,8 +233,8 @@ const LinkCard: React.FC<LinkCardProps> = ({
 
         {/* Google Tracks At */}
         <section className="bg-white p-4 rounded-md border border-gray-300 shadow-sm flex items-center justify-between">
-          <div className="flex items-center gap-3 text-indigo-600">
-            <Calendar className="w-6 h-6" />
+          <div className="flex items-center gap-3 text-emerald-600">
+            <MapPin className="w-6 h-6" />
             <h2 className="text-lg font-semibold">Google Tracking ID</h2>
           </div>
           {trackingId ?
