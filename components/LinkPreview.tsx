@@ -1,178 +1,298 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @next/next/no-img-element */
-import React from 'react'
-import { Card, CardContent } from './ui/card'
-import { Button } from './ui/button';
-import { ExternalLink } from 'lucide-react';
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Calendar, Copy, ExternalLink, Lock } from "lucide-react";
+import { useQRCode } from "next-qrcode";
+import QRCodeDownloadBtn from "./QRCodeDownloadBtn";
 
-const LinkPreview = (params: any) => {
-
-  const id = params.id;
-  const shortUrl = `/i/${id}`;
-  const link = JSON.parse(params.link);
-
-  let password_prompt: any
-  let status = true;
-
-  if (String(link.password).length !== 0) {
-    status = false
-
-    while (password_prompt !== link.password) {
-      password_prompt = window.prompt("This page is password protected, please enter the password to continue");
-
-      if (password_prompt === null) {
-        alert("Access denied!");
-        return null; // Stop execution if the user cancels
-      }
-
-      if (password_prompt !== link.password) {
-        alert("Incorrect password, try again.");
-      }
-
-      if (password_prompt == link.password) {
-        status = true
-      }
-    }
-  }
-
-  // console.log(link)
-
-  return (
-    <div>
-      {status && (
-        <Card className="w-full text-sm p-2 pt-8 rounded-none border-b border-neutral-700 prose prose-sm max-w-none prose-invert">
-          <CardContent>
-
-            {link.ogImage && (
-              <img src={link.ogImage} alt="" className="max-w-32 lg:max-w-44 m-0 rounded-xl" />
-            )}
-
-            <h1 className="pt-6">{link.ogTitle}</h1>
-            <p className="text-neutral-200">{link.ogDescription}</p>
-
-            <div className="mt-6">
-              <p className="text-neutral-100 text-xl pb-2 font-medium">Original URL:</p>
-              <a href={link.originalUrl} target="_blank" className="text-blue-600 underline truncate block">
-                {link.originalUrl}
-              </a>
-            </div>
-
-            <p className="pt-3 text-sm text-neutral-200">Created: {new Date(link.createdAt).toLocaleString()}</p>
-
-            {/* <div className="mt-6 flex items-center justify-between">
-            <p className="text-neutral-100 font-medium">Shortened:</p>
-            <div className="flex items-center gap-2">
-                <a href={shortUrl} target="_blank" className="text-blue-600 font-semibold">
-                    {shortUrl}
-                </a>
-            </div>
-        </div> */}
-
-
-
-            {/* Generate code that says share this link on different platform with the current page link in different social media platforms */}
-            <div className="mt-6">
-              <p className="text-neutral-100 text-xl pb-2 font-medium">Share this link:</p>
-              <div className="flex space-x-4 flex-wrap">
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Facebook
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Twitter
-                </a>
-                <a
-                  href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  LinkedIn
-                </a>
-                <a
-                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  WhatsApp
-                </a>
-                <a
-                  href={`mailto:?body=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Email
-                </a>
-                <a
-                  href={`https://telegram.me/share/url?url=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Telegram
-                </a>
-                <a
-                  href={`https://www.reddit.com/submit?url=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Reddit
-                </a>
-                <a
-                  href={`https://www.tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Tumblr
-                </a>
-                <a
-                  href={`https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Pinterest
-                </a>
-                <a
-                  href={`https://www.blogger.com/blog-this.g?u=${encodeURIComponent(`https://mascrow-app.vercel.app/${shortUrl}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-400 underline"
-                >
-                  Blogger
-                </a>
-              </div>
-            </div>
-
-
-            <div className="mt-6 flex justify-end">
-              <Button asChild>
-                <a href={link.originalUrl} target="_blank">
-                  Open Link <ExternalLink className="w-4 h-4 ml-2" />
-                </a>
-              </Button>
-            </div>
-
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  )
+interface LinkCardProps {
+  originalUrl: string;
+  shortId: string;
+  createdAt: string;
+  password?: string;
+  ogTitle: string;
+  ogDescription: string;
+  ogImage?: string;
 }
 
-export default LinkPreview
+const LinkCard: React.FC<LinkCardProps> = ({
+  originalUrl,
+  shortId,
+  createdAt,
+  password,
+  ogTitle,
+  ogDescription,
+  ogImage,
+}) => {
+  const { Canvas } = useQRCode();
+  const [copied, setCopied] = useState<string | null>(null);
+  const [hasAccess, setHasAccess] = useState(!password);
+  const [passwordInput, setPasswordInput] = useState("");
+  const shortUrl = `${window.location.origin}/i/${shortId}`;
+
+  // Handle password prompt in UI instead of blocking window.prompt
+  const handlePasswordSubmit = () => {
+    if (passwordInput === password) {
+      setHasAccess(true);
+    } else {
+      alert("Incorrect password, try again.");
+      setPasswordInput("");
+    }
+  };
+
+  const copyToClipboard = (text: string, label: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(label);
+        setTimeout(() => setCopied(null), 2000);
+      });
+    }
+  };
+
+  if (!hasAccess) {
+    return (
+      <Card className="max-w-xl mx-auto p-6 my-10 shadow-lg rounded-lg bg-neutral-900 text-neutral-100">
+        <CardContent>
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <Lock className="w-6 h-6 text-purple-500" />
+            Password Protected
+          </h2>
+          <input
+            type="password"
+            placeholder="Enter password"
+            className="w-full p-3 rounded border border-neutral-700 bg-neutral-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handlePasswordSubmit()}
+          />
+          <Button
+            className="mt-4 w-full"
+            onClick={handlePasswordSubmit}
+            disabled={!passwordInput.trim()}
+          >
+            Submit
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="px-4 py-8 space-y-8">
+      {/* OG Preview Card */}
+      <Card className="flex flex-col md:flex-row bg-neutral-900 text-neutral-100 p-6 rounded-lg shadow-lg gap-6">
+        {ogImage && (
+          <img
+            src={ogImage}
+            alt="Preview Image"
+            className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-lg shadow"
+          />
+        )}
+        <div className="flex flex-col justify-center">
+          <h1 className="text-3xl font-bold flex items-center gap-3">
+            {ogTitle}
+            <ExternalLink className="w-6 h-6 text-primary" />
+          </h1>
+          <p className="mt-2 text-neutral-300 max-w-xl">{ogDescription || "No description provided."}</p>
+        </div>
+      </Card>
+
+      {/* URLs Card */}
+      <Card className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 shadow rounded-lg bg-white">
+        {/* Original URL */}
+        <section>
+          <h3 className="font-semibold text-lg mb-2 flex items-center gap-2 text-blue-700">
+            Original URL
+          </h3>
+          <div className="flex items-center justify-between gap-2 break-words">
+            <a
+              href={originalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline font-medium truncate max-w-full"
+              title={originalUrl}
+            >
+              {originalUrl}
+            </a>
+            <Button
+              size="icon"
+              variant="ghost"
+              aria-label="Copy original URL"
+              onClick={() => copyToClipboard(originalUrl, "original")}
+              className="text-blue-600 hover:text-blue-800"
+            >
+              <Copy className="w-5 h-5" />
+            </Button>
+          </div>
+        </section>
+
+        {/* Shortened URL */}
+        <section>
+          <h3 className="font-semibold text-lg mb-2 flex items-center gap-2 text-green-700">
+            Shortened Link
+          </h3>
+          <div className="flex items-center justify-between gap-2 break-words">
+            <a
+              href={shortUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 underline font-medium truncate max-w-full"
+              title={shortUrl}
+            >
+              {shortUrl}
+            </a>
+            <Button
+              size="icon"
+              variant="ghost"
+              aria-label="Copy shortened URL"
+              onClick={() => copyToClipboard(shortUrl, "shortened")}
+              className="text-green-600 hover:text-green-800"
+            >
+              <Copy className="w-5 h-5" />
+            </Button>
+          </div>
+        </section>
+      </Card>
+
+      {/* Meta info */}
+      <Card className="flex items-center justify-between p-6 rounded-lg shadow bg-white">
+        <div className="flex items-center gap-3">
+          <Calendar className="w-6 h-6 text-indigo-600" />
+          <time
+            dateTime={new Date(createdAt).toISOString()}
+            className="text-gray-700 font-mono"
+          >
+            Created: {new Date(createdAt).toLocaleString()}
+          </time>
+        </div>
+        {password && (
+          <div className="flex items-center gap-2 bg-purple-100 text-purple-800 rounded-md px-3 py-1 font-mono">
+            <Lock className="w-5 h-5" />
+            <span>Password protected</span>
+          </div>
+        )}
+      </Card>
+
+      {/* QR Code + Download */}
+      <Card className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-lg shadow bg-gray-50">
+        <Canvas
+          text={shortUrl}
+          options={{
+            errorCorrectionLevel: "M",
+            margin: 3,
+            scale: 6,
+            width: 180,
+            color: {
+              dark: "#000",
+              light: "#FFF",
+            },
+          }}
+        />
+        <QRCodeDownloadBtn shortId={shortId} />
+      </Card>
+
+      {/* Open Link Button */}
+      <div className="flex justify-end">
+        <Button
+          asChild
+          className="bg-primary hover:bg-primary-dark bg-black text-white py-3 px-6 rounded-md shadow-md transition"
+        >
+          <a href={originalUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 no-underline font-semibold">
+            Open Link <ExternalLink className="w-5 h-5" />
+          </a>
+        </Button>
+      </div>
+
+      {/* Social Share */}
+      <Card className="p-6 bg-white rounded-lg shadow">
+        <h3 className="text-lg font-semibold mb-4 text-gray-800">
+          Share this link
+        </h3>
+        <div className="flex flex-wrap gap-4 text-sm">
+          {[
+            {
+              name: "Facebook",
+              url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "Twitter",
+              url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "LinkedIn",
+              url: `https://www.linkedin.com/shareArticle?url=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "WhatsApp",
+              url: `https://api.whatsapp.com/send?text=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "Email",
+              url: `mailto:?body=${encodeURIComponent(shortUrl)}`,
+            },
+            {
+              name: "Telegram",
+              url: `https://telegram.me/share/url?url=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "Reddit",
+              url: `https://www.reddit.com/submit?url=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "Tumblr",
+              url: `https://www.tumblr.com/widgets/share/tool?canonicalUrl=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "Pinterest",
+              url: `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+            {
+              name: "Blogger",
+              url: `https://www.blogger.com/blog-this.g?u=${encodeURIComponent(
+                shortUrl
+              )}`,
+            },
+          ].map(({ name, url }) => (
+            <a
+              key={name}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-orange-500 underline hover:text-orange-600 transition"
+            >
+              {name}
+            </a>
+          ))}
+        </div>
+      </Card>
+
+      {/* Copy Confirmation */}
+      {copied && (
+        <p className="text-center text-green-600 font-semibold text-sm mt-4">
+          {`Copied ${copied} URL to clipboard!`}
+        </p>
+      )}
+    </div>
+  );
+};
+
+export default LinkCard;
